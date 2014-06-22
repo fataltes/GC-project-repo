@@ -1,0 +1,135 @@
+Collect, Work with, and Clean a Data Set
+========================================================
+```{r setoptions, echo=FALSE, cache=FALSE}
+opts_chunk$set(echo = TRUE)
+```
+This is an R Markdown document which shows the scenario of collecting, cleaning, and working with a data set step by step.
+DataSet is collected from accelerometers of the Sumsung Galaxy S smartphone.
+
+# Collect the dataset
+getting the zipped file from internet
+
+```{r}
+url<-"http://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip"
+download.file(url=url, destfile="dataset.zip")
+unzip(zipfile="dataset.zip")
+```
+
+reading train and test data and their corresponding labels into memory
+
+```{r}
+traindata<-read.table("UCI HAR Dataset/train/X_train.txt", header=FALSE)
+testdata<-read.table("UCI HAR Dataset/test/X_test.txt", header=FALSE)
+trainsubject<-read.table("UCI HAR Dataset/train/subject_train.txt", header=FALSE)
+testsubject<-read.table("UCI HAR Dataset/test/subject_test.txt", header=FALSE)
+trainlabels<-read.table("UCI HAR Dataset/train/Y_train.txt", header=FALSE)
+testlabels<-read.table("UCI HAR Dataset/test/Y_test.txt", header=FALSE)
+```
+
+# Merge the training and test sets to create one data set
+
+```{r}
+totaltrain<-cbind(trainsubject, traindata, trainlabels)
+totaltest<-cbind(testsubject, testdata, testlabels)
+totaldata<-rbind(totaltrain, totaltest)
+
+dim(totaldata)
+```
+
+totaldata is a data.frame with `r dim(totaldata)[1]` rows and `r dim(totaldata)[2]` columns or in other word attributes.
+
+```{r}
+totaldata[1, 1:5]
+```
+
+as you can see, the attributes still have no names.
+
+removing extra data after using them
+
+```{r}
+rm(list=c("traindata", "testdata", "trainsubject", "testsubject", 
+          "trainlabels", "testlabels",
+          "totaltrain", "totaltest"))
+```
+
+# Name each column of data set including the label column
+
+first read the features from the corresponding file
+
+```{r}
+features<-read.table("UCI HAR Dataset/features.txt", stringsAsFactors=FALSE)
+```
+
+replace any punctuation from names so they can be fetched using $,
+then add two other names, subject_id and activity_id at the beginning and end of this list of names.
+
+```{r}
+names(totaldata)<-c("subject_id", gsub(x=features[,2], pattern="[[:punct:]]", replacement="_"), 
+                    "activity_id")
+names(totaldata)
+```
+
+# Use descriptive activity names to name the activities in the data set
+read the activity descriptive labels
+
+```{r}
+activities<-read.table("UCI HAR Dataset/activity_labels.txt")
+```
+
+doublecheck for the orders of activities
+
+```{r}
+activities$v2<-factor(activities$V2, c("WALKING", "WALKING_UPSTAIRS", "WALKING_DOWNSTAIRS", "SITTING", "STANDING", "LAYING"))
+totaldata$activity_descriptive_label<-activities$V2[totaldata$activity_id]
+
+levels(totaldata$activity_descriptive_label)
+```
+
+removing extra data after using them
+
+```{r}
+rm(list=c("activities", "features"))
+```
+
+# Extract only the measurements that compute mean or standard deviation
+using the names I will extract all columns containing the words "mean" or "std" in their names plus activity_descriptive_label which is the label of each row
+
+```{r}
+totaldata_meanstd<-totaldata[, sort(c(grep("mean", names(totaldata)),
+                                    grep("std", names(totaldata)),
+                                    grep("activity_descriptive_label", names(totaldata))))]
+
+names(totaldata_meanstd)
+```
+
+# Create an independent tidy data set with the average of each variable for each activity and each subject
+
+first I split totaldata based on "subject_id" and "activity_descriptive_label"
+
+```{r}
+spliteddata<-
+  split(totaldata, list(totaldata$subject_id, totaldata$activity_descriptive_label))
+```
+
+then apply the colmeans function for each of splited list of data
+
+```{r}
+tidydata<-sapply(
+  spliteddata, 
+  function(x) colMeans(x[, -which(names(totaldata) %in% 
+                                    c("subject_id", 
+                                      "activity_id",
+                                      "activity_descriptive_label"))]))
+tidydata[1:3, 1:3]
+```
+
+columns are the combination of subject_id and activity_id.
+For exampe, 1.LAYING means subject "1"" with activity "LAYING"
+and rows show the attribute names.
+value of each cell is the average value of the specified attribute for the specific subject and activity.
+
+save the data in a file
+
+```{r}
+write.table(x=tidydata, file="tidydata.txt")
+```

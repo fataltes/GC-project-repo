@@ -184,6 +184,15 @@ hljs.initHighlightingOnLoad();
 <p>This is an R Markdown document which shows the scenario of collecting, cleaning, and working with a data set step by step.
 DataSet is collected from accelerometers of the Sumsung Galaxy S smartphone.</p>
 
+<h1>Collect the dataset</h1>
+
+<p>getting the zipped file from internet</p>
+
+<pre><code class="r">url&lt;-&quot;http://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip&quot;
+download.file(url=url, destfile=&quot;dataset.zip&quot;)
+unzip(zipfile=&quot;dataset.zip&quot;)
+</code></pre>
+
 <p>reading train and test data and their corresponding labels into memory</p>
 
 <pre><code class="r">traindata&lt;-read.table(&quot;UCI HAR Dataset/train/X_train.txt&quot;, header=FALSE)
