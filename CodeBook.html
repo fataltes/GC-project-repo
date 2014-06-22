@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+<!-- saved from url=(0014)about:internet -->
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="x-ua-compatible" content="IE=9" >
+
+<title>Collect, Work with, and Clean a Data Set</title>
+
+<style type="text/css">
+body, td {
+   font-family: sans-serif;
+   background-color: white;
+   font-size: 12px;
+   margin: 8px;
+}
+
+tt, code, pre {
+   font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace;
+}
+
+h1 { 
+   font-size:2.2em; 
+}
+
+h2 { 
+   font-size:1.8em; 
+}
+
+h3 { 
+   font-size:1.4em; 
+}
+
+h4 { 
+   font-size:1.0em; 
+}
+
+h5 { 
+   font-size:0.9em; 
+}
+
+h6 { 
+   font-size:0.8em; 
+}
+
+a:visited {
+   color: rgb(50%, 0%, 50%);
+}
+
+pre {	
+   margin-top: 0;
+   max-width: 95%;
+   border: 1px solid #ccc;
+   white-space: pre-wrap;
+}
+
+pre code {
+   display: block; padding: 0.5em;
+}
+
+code.r, code.cpp {
+   background-color: #F8F8F8;
+}
+
+table, td, th {
+  border: none;
+}
+
+blockquote {
+   color:#666666;
+   margin:0;
+   padding-left: 1em;
+   border-left: 0.5em #EEE solid;
+}
+
+hr {
+   height: 0px;
+   border-bottom: none;
+   border-top-width: thin;
+   border-top-style: dotted;
+   border-top-color: #999999;
+}
+
+@media print {
+   * { 
+      background: transparent !important; 
+      color: black !important; 
+      filter:none !important; 
+      -ms-filter: none !important; 
+   }
+
+   body { 
+      font-size:12pt; 
+      max-width:100%; 
+   }
+       
+   a, a:visited { 
+      text-decoration: underline; 
+   }
+
+   hr { 
+      visibility: hidden;
+      page-break-before: always;
+   }
+
+   pre, blockquote { 
+      padding-right: 1em; 
+      page-break-inside: avoid; 
+   }
+
+   tr, img { 
+      page-break-inside: avoid; 
+   }
+
+   img { 
+      max-width: 100% !important; 
+   }
+
+   @page :left { 
+      margin: 15mm 20mm 15mm 10mm; 
+   }
+     
+   @page :right { 
+      margin: 15mm 10mm 15mm 20mm; 
+   }
+
+   p, h2, h3 { 
+      orphans: 3; widows: 3; 
+   }
+
+   h2, h3 { 
+      page-break-after: avoid; 
+   }
+}
+
+</style>
+
+<!-- Styles for R syntax highlighter -->
+<style type="text/css">
+   pre .operator,
+   pre .paren {
+     color: rgb(104, 118, 135)
+   }
+
+   pre .literal {
+     color: rgb(88, 72, 246)
+   }
+
+   pre .number {
+     color: rgb(0, 0, 205);
+   }
+
+   pre .comment {
+     color: rgb(76, 136, 107);
+   }
+
+   pre .keyword {
+     color: rgb(0, 0, 255);
+   }
+
+   pre .identifier {
+     color: rgb(0, 0, 0);
+   }
+
+   pre .string {
+     color: rgb(3, 106, 7);
+   }
+</style>
+
+<!-- R syntax highlighter -->
+<script type="text/javascript">
+var hljs=new function(){function m(p){return p.replace(/&/gm,"&amp;").replace(/</gm,"&lt;")}function f(r,q,p){return RegExp(q,"m"+(r.cI?"i":"")+(p?"g":""))}function b(r){for(var p=0;p<r.childNodes.length;p++){var q=r.childNodes[p];if(q.nodeName=="CODE"){return q}if(!(q.nodeType==3&&q.nodeValue.match(/\s+/))){break}}}function h(t,s){var p="";for(var r=0;r<t.childNodes.length;r++){if(t.childNodes[r].nodeType==3){var q=t.childNodes[r].nodeValue;if(s){q=q.replace(/\n/g,"")}p+=q}else{if(t.childNodes[r].nodeName=="BR"){p+="\n"}else{p+=h(t.childNodes[r])}}}if(/MSIE [678]/.test(navigator.userAgent)){p=p.replace(/\r/g,"\n")}return p}function a(s){var r=s.className.split(/\s+/);r=r.concat(s.parentNode.className.split(/\s+/));for(var q=0;q<r.length;q++){var p=r[q].replace(/^language-/,"");if(e[p]){return p}}}function c(q){var p=[];(function(s,t){for(var r=0;r<s.childNodes.length;r++){if(s.childNodes[r].nodeType==3){t+=s.childNodes[r].nodeValue.length}else{if(s.childNodes[r].nodeName=="BR"){t+=1}else{if(s.childNodes[r].nodeType==1){p.push({event:"start",offset:t,node:s.childNodes[r]});t=arguments.callee(s.childNodes[r],t);p.push({event:"stop",offset:t,node:s.childNodes[r]})}}}}return t})(q,0);return p}function k(y,w,x){var q=0;var z="";var s=[];function u(){if(y.length&&w.length){if(y[0].offset!=w[0].offset){return(y[0].offset<w[0].offset)?y:w}else{return w[0].event=="start"?y:w}}else{return y.length?y:w}}function t(D){var A="<"+D.nodeName.toLowerCase();for(var B=0;B<D.attributes.length;B++){var C=D.attributes[B];A+=" "+C.nodeName.toLowerCase();if(C.value!==undefined&&C.value!==false&&C.value!==null){A+='="'+m(C.value)+'"'}}return A+">"}while(y.length||w.length){var v=u().splice(0,1)[0];z+=m(x.substr(q,v.offset-q));q=v.offset;if(v.event=="start"){z+=t(v.node);s.push(v.node)}else{if(v.event=="stop"){var p,r=s.length;do{r--;p=s[r];z+=("</"+p.nodeName.toLowerCase()+">")}while(p!=v.node);s.splice(r,1);while(r<s.length){z+=t(s[r]);r++}}}}return z+m(x.substr(q))}function j(){function q(x,y,v){if(x.compiled){return}var u;var s=[];if(x.k){x.lR=f(y,x.l||hljs.IR,true);for(var w in x.k){if(!x.k.hasOwnProperty(w)){continue}if(x.k[w] instanceof Object){u=x.k[w]}else{u=x.k;w="keyword"}for(var r in u){if(!u.hasOwnProperty(r)){continue}x.k[r]=[w,u[r]];s.push(r)}}}if(!v){if(x.bWK){x.b="\\b("+s.join("|")+")\\s"}x.bR=f(y,x.b?x.b:"\\B|\\b");if(!x.e&&!x.eW){x.e="\\B|\\b"}if(x.e){x.eR=f(y,x.e)}}if(x.i){x.iR=f(y,x.i)}if(x.r===undefined){x.r=1}if(!x.c){x.c=[]}x.compiled=true;for(var t=0;t<x.c.length;t++){if(x.c[t]=="self"){x.c[t]=x}q(x.c[t],y,false)}if(x.starts){q(x.starts,y,false)}}for(var p in e){if(!e.hasOwnProperty(p)){continue}q(e[p].dM,e[p],true)}}function d(B,C){if(!j.called){j();j.called=true}function q(r,M){for(var L=0;L<M.c.length;L++){if((M.c[L].bR.exec(r)||[null])[0]==r){return M.c[L]}}}function v(L,r){if(D[L].e&&D[L].eR.test(r)){return 1}if(D[L].eW){var M=v(L-1,r);return M?M+1:0}return 0}function w(r,L){return L.i&&L.iR.test(r)}function K(N,O){var M=[];for(var L=0;L<N.c.length;L++){M.push(N.c[L].b)}var r=D.length-1;do{if(D[r].e){M.push(D[r].e)}r--}while(D[r+1].eW);if(N.i){M.push(N.i)}return f(O,M.join("|"),true)}function p(M,L){var N=D[D.length-1];if(!N.t){N.t=K(N,E)}N.t.lastIndex=L;var r=N.t.exec(M);return r?[M.substr(L,r.index-L),r[0],false]:[M.substr(L),"",true]}function z(N,r){var L=E.cI?r[0].toLowerCase():r[0];var M=N.k[L];if(M&&M instanceof Array){return M}return false}function F(L,P){L=m(L);if(!P.k){return L}var r="";var O=0;P.lR.lastIndex=0;var M=P.lR.exec(L);while(M){r+=L.substr(O,M.index-O);var N=z(P,M);if(N){x+=N[1];r+='<span class="'+N[0]+'">'+M[0]+"</span>"}else{r+=M[0]}O=P.lR.lastIndex;M=P.lR.exec(L)}return r+L.substr(O,L.length-O)}function J(L,M){if(M.sL&&e[M.sL]){var r=d(M.sL,L);x+=r.keyword_count;return r.value}else{return F(L,M)}}function I(M,r){var L=M.cN?'<span class="'+M.cN+'">':"";if(M.rB){y+=L;M.buffer=""}else{if(M.eB){y+=m(r)+L;M.buffer=""}else{y+=L;M.buffer=r}}D.push(M);A+=M.r}function G(N,M,Q){var R=D[D.length-1];if(Q){y+=J(R.buffer+N,R);return false}var P=q(M,R);if(P){y+=J(R.buffer+N,R);I(P,M);return P.rB}var L=v(D.length-1,M);if(L){var O=R.cN?"</span>":"";if(R.rE){y+=J(R.buffer+N,R)+O}else{if(R.eE){y+=J(R.buffer+N,R)+O+m(M)}else{y+=J(R.buffer+N+M,R)+O}}while(L>1){O=D[D.length-2].cN?"</span>":"";y+=O;L--;D.length--}var r=D[D.length-1];D.length--;D[D.length-1].buffer="";if(r.starts){I(r.starts,"")}return R.rE}if(w(M,R)){throw"Illegal"}}var E=e[B];var D=[E.dM];var A=0;var x=0;var y="";try{var s,u=0;E.dM.buffer="";do{s=p(C,u);var t=G(s[0],s[1],s[2]);u+=s[0].length;if(!t){u+=s[1].length}}while(!s[2]);if(D.length>1){throw"Illegal"}return{r:A,keyword_count:x,value:y}}catch(H){if(H=="Illegal"){return{r:0,keyword_count:0,value:m(C)}}else{throw H}}}function g(t){var p={keyword_count:0,r:0,value:m(t)};var r=p;for(var q in e){if(!e.hasOwnProperty(q)){continue}var s=d(q,t);s.language=q;if(s.keyword_count+s.r>r.keyword_count+r.r){r=s}if(s.keyword_count+s.r>p.keyword_count+p.r){r=p;p=s}}if(r.language){p.second_best=r}return p}function i(r,q,p){if(q){r=r.replace(/^((<[^>]+>|\t)+)/gm,function(t,w,v,u){return w.replace(/\t/g,q)})}if(p){r=r.replace(/\n/g,"<br>")}return r}function n(t,w,r){var x=h(t,r);var v=a(t);var y,s;if(v){y=d(v,x)}else{return}var q=c(t);if(q.length){s=document.createElement("pre");s.innerHTML=y.value;y.value=k(q,c(s),x)}y.value=i(y.value,w,r);var u=t.className;if(!u.match("(\\s|^)(language-)?"+v+"(\\s|$)")){u=u?(u+" "+v):v}if(/MSIE [678]/.test(navigator.userAgent)&&t.tagName=="CODE"&&t.parentNode.tagName=="PRE"){s=t.parentNode;var p=document.createElement("div");p.innerHTML="<pre><code>"+y.value+"</code></pre>";t=p.firstChild.firstChild;p.firstChild.cN=s.cN;s.parentNode.replaceChild(p.firstChild,s)}else{t.innerHTML=y.value}t.className=u;t.result={language:v,kw:y.keyword_count,re:y.r};if(y.second_best){t.second_best={language:y.second_best.language,kw:y.second_best.keyword_count,re:y.second_best.r}}}function o(){if(o.called){return}o.called=true;var r=document.getElementsByTagName("pre");for(var p=0;p<r.length;p++){var q=b(r[p]);if(q){n(q,hljs.tabReplace)}}}function l(){if(window.addEventListener){window.addEventListener("DOMContentLoaded",o,false);window.addEventListener("load",o,false)}else{if(window.attachEvent){window.attachEvent("onload",o)}else{window.onload=o}}}var e={};this.LANGUAGES=e;this.highlight=d;this.highlightAuto=g;this.fixMarkup=i;this.highlightBlock=n;this.initHighlighting=o;this.initHighlightingOnLoad=l;this.IR="[a-zA-Z][a-zA-Z0-9_]*";this.UIR="[a-zA-Z_][a-zA-Z0-9_]*";this.NR="\\b\\d+(\\.\\d+)?";this.CNR="\\b(0[xX][a-fA-F0-9]+|(\\d+(\\.\\d*)?|\\.\\d+)([eE][-+]?\\d+)?)";this.BNR="\\b(0b[01]+)";this.RSR="!|!=|!==|%|%=|&|&&|&=|\\*|\\*=|\\+|\\+=|,|\\.|-|-=|/|/=|:|;|<|<<|<<=|<=|=|==|===|>|>=|>>|>>=|>>>|>>>=|\\?|\\[|\\{|\\(|\\^|\\^=|\\||\\|=|\\|\\||~";this.ER="(?![\\s\\S])";this.BE={b:"\\\\.",r:0};this.ASM={cN:"string",b:"'",e:"'",i:"\\n",c:[this.BE],r:0};this.QSM={cN:"string",b:'"',e:'"',i:"\\n",c:[this.BE],r:0};this.CLCM={cN:"comment",b:"//",e:"$"};this.CBLCLM={cN:"comment",b:"/\\*",e:"\\*/"};this.HCM={cN:"comment",b:"#",e:"$"};this.NM={cN:"number",b:this.NR,r:0};this.CNM={cN:"number",b:this.CNR,r:0};this.BNM={cN:"number",b:this.BNR,r:0};this.inherit=function(r,s){var p={};for(var q in r){p[q]=r[q]}if(s){for(var q in s){p[q]=s[q]}}return p}}();hljs.LANGUAGES.cpp=function(){var a={keyword:{"false":1,"int":1,"float":1,"while":1,"private":1,"char":1,"catch":1,"export":1,virtual:1,operator:2,sizeof:2,dynamic_cast:2,typedef:2,const_cast:2,"const":1,struct:1,"for":1,static_cast:2,union:1,namespace:1,unsigned:1,"long":1,"throw":1,"volatile":2,"static":1,"protected":1,bool:1,template:1,mutable:1,"if":1,"public":1,friend:2,"do":1,"return":1,"goto":1,auto:1,"void":2,"enum":1,"else":1,"break":1,"new":1,extern:1,using:1,"true":1,"class":1,asm:1,"case":1,typeid:1,"short":1,reinterpret_cast:2,"default":1,"double":1,register:1,explicit:1,signed:1,typename:1,"try":1,"this":1,"switch":1,"continue":1,wchar_t:1,inline:1,"delete":1,alignof:1,char16_t:1,char32_t:1,constexpr:1,decltype:1,noexcept:1,nullptr:1,static_assert:1,thread_local:1,restrict:1,_Bool:1,complex:1},built_in:{std:1,string:1,cin:1,cout:1,cerr:1,clog:1,stringstream:1,istringstream:1,ostringstream:1,auto_ptr:1,deque:1,list:1,queue:1,stack:1,vector:1,map:1,set:1,bitset:1,multiset:1,multimap:1,unordered_set:1,unordered_map:1,unordered_multiset:1,unordered_multimap:1,array:1,shared_ptr:1}};return{dM:{k:a,i:"</",c:[hljs.CLCM,hljs.CBLCLM,hljs.QSM,{cN:"string",b:"'\\\\?.",e:"'",i:"."},{cN:"number",b:"\\b(\\d+(\\.\\d*)?|\\.\\d+)(u|U|l|L|ul|UL|f|F)"},hljs.CNM,{cN:"preprocessor",b:"#",e:"$"},{cN:"stl_container",b:"\\b(deque|list|queue|stack|vector|map|set|bitset|multiset|multimap|unordered_map|unordered_set|unordered_multiset|unordered_multimap|array)\\s*<",e:">",k:a,r:10,c:["self"]}]}}}();hljs.LANGUAGES.r={dM:{c:[hljs.HCM,{cN:"number",b:"\\b0[xX][0-9a-fA-F]+[Li]?\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"number",b:"\\b\\d+(?:[eE][+\\-]?\\d*)?L\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"number",b:"\\b\\d+\\.(?!\\d)(?:i\\b)?",e:hljs.IMMEDIATE_RE,r:1},{cN:"number",b:"\\b\\d+(?:\\.\\d*)?(?:[eE][+\\-]?\\d*)?i?\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"number",b:"\\.\\d+(?:[eE][+\\-]?\\d*)?i?\\b",e:hljs.IMMEDIATE_RE,r:1},{cN:"keyword",b:"(?:tryCatch|library|setGeneric|setGroupGeneric)\\b",e:hljs.IMMEDIATE_RE,r:10},{cN:"keyword",b:"\\.\\.\\.",e:hljs.IMMEDIATE_RE,r:10},{cN:"keyword",b:"\\.\\.\\d+(?![\\w.])",e:hljs.IMMEDIATE_RE,r:10},{cN:"keyword",b:"\\b(?:function)",e:hljs.IMMEDIATE_RE,r:2},{cN:"keyword",b:"(?:if|in|break|next|repeat|else|for|return|switch|while|try|stop|warning|require|attach|detach|source|setMethod|setClass)\\b",e:hljs.IMMEDIATE_RE,r:1},{cN:"literal",b:"(?:NA|NA_integer_|NA_real_|NA_character_|NA_complex_)\\b",e:hljs.IMMEDIATE_RE,r:10},{cN:"literal",b:"(?:NULL|TRUE|FALSE|T|F|Inf|NaN)\\b",e:hljs.IMMEDIATE_RE,r:1},{cN:"identifier",b:"[a-zA-Z.][a-zA-Z0-9._]*\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"operator",b:"<\\-(?!\\s*\\d)",e:hljs.IMMEDIATE_RE,r:2},{cN:"operator",b:"\\->|<\\-",e:hljs.IMMEDIATE_RE,r:1},{cN:"operator",b:"%%|~",e:hljs.IMMEDIATE_RE},{cN:"operator",b:">=|<=|==|!=|\\|\\||&&|=|\\+|\\-|\\*|/|\\^|>|<|!|&|\\||\\$|:",e:hljs.IMMEDIATE_RE,r:0},{cN:"operator",b:"%",e:"%",i:"\\n",r:1},{cN:"identifier",b:"`",e:"`",r:0},{cN:"string",b:'"',e:'"',c:[hljs.BE],r:0},{cN:"string",b:"'",e:"'",c:[hljs.BE],r:0},{cN:"paren",b:"[[({\\])}]",e:hljs.IMMEDIATE_RE,r:0}]}};
+hljs.initHighlightingOnLoad();
+</script>
+
+
+
+
+</head>
+
+<body>
+<h1>Collect, Work with, and Clean a Data Set</h1>
+
+<p>This is an R Markdown document which shows the scenario of collecting, cleaning, and working with a data set step by step.
+DataSet is collected from accelerometers of the Sumsung Galaxy S smartphone.</p>
+
+<p>reading train and test data and their corresponding labels into memory</p>
+
+<pre><code class="r">traindata&lt;-read.table(&quot;UCI HAR Dataset/train/X_train.txt&quot;, header=FALSE)
+testdata&lt;-read.table(&quot;UCI HAR Dataset/test/X_test.txt&quot;, header=FALSE)
+trainsubject&lt;-read.table(&quot;UCI HAR Dataset/train/subject_train.txt&quot;, header=FALSE)
+testsubject&lt;-read.table(&quot;UCI HAR Dataset/test/subject_test.txt&quot;, header=FALSE)
+trainlabels&lt;-read.table(&quot;UCI HAR Dataset/train/Y_train.txt&quot;, header=FALSE)
+testlabels&lt;-read.table(&quot;UCI HAR Dataset/test/Y_test.txt&quot;, header=FALSE)
+</code></pre>
+
+<h1>Merge the training and test sets to create one data set</h1>
+
+<pre><code class="r">totaltrain&lt;-cbind(trainsubject, traindata, trainlabels)
+totaltest&lt;-cbind(testsubject, testdata, testlabels)
+totaldata&lt;-rbind(totaltrain, totaltest)
+
+dim(totaldata)
+</code></pre>
+
+<pre><code>## [1] 10299   563
+</code></pre>
+
+<p>totaldata is a data.frame with 10299 rows and 563 columns or in other word attributes.</p>
+
+<pre><code class="r">totaldata[1, 1:5]
+</code></pre>
+
+<pre><code>##   V1   V1.1       V2      V3      V4
+## 1  1 0.2886 -0.02029 -0.1329 -0.9953
+</code></pre>
+
+<p>as you can see, the attributes still have no names.</p>
+
+<p>removing extra data after using them</p>
+
+<pre><code class="r">rm(list=c(&quot;traindata&quot;, &quot;testdata&quot;, &quot;trainsubject&quot;, &quot;testsubject&quot;, 
+          &quot;trainlabels&quot;, &quot;testlabels&quot;,
+          &quot;totaltrain&quot;, &quot;totaltest&quot;))
+</code></pre>
+
+<h1>Name each column of data set including the label column</h1>
+
+<p>first read the features from the corresponding file</p>
+
+<pre><code class="r">features&lt;-read.table(&quot;UCI HAR Dataset/features.txt&quot;, stringsAsFactors=FALSE)
+</code></pre>
+
+<p>replace any punctuation from names so they can be fetched using $,
+then add two other names, subject_id and activity_id at the beginning and end of this list of names.</p>
+
+<pre><code class="r">names(totaldata)&lt;-c(&quot;subject_id&quot;, gsub(x=features[,2], pattern=&quot;[[:punct:]]&quot;, replacement=&quot;_&quot;), 
+                    &quot;activity_id&quot;)
+names(totaldata)
+</code></pre>
+
+<pre><code>##   [1] &quot;subject_id&quot;                          
+##   [2] &quot;tBodyAcc_mean___X&quot;                   
+##   [3] &quot;tBodyAcc_mean___Y&quot;                   
+##   [4] &quot;tBodyAcc_mean___Z&quot;                   
+##   [5] &quot;tBodyAcc_std___X&quot;                    
+##   [6] &quot;tBodyAcc_std___Y&quot;                    
+##   [7] &quot;tBodyAcc_std___Z&quot;                    
+##   [8] &quot;tBodyAcc_mad___X&quot;                    
+##   [9] &quot;tBodyAcc_mad___Y&quot;                    
+##  [10] &quot;tBodyAcc_mad___Z&quot;                    
+##  [11] &quot;tBodyAcc_max___X&quot;                    
+##  [12] &quot;tBodyAcc_max___Y&quot;                    
+##  [13] &quot;tBodyAcc_max___Z&quot;                    
+##  [14] &quot;tBodyAcc_min___X&quot;                    
+##  [15] &quot;tBodyAcc_min___Y&quot;                    
+##  [16] &quot;tBodyAcc_min___Z&quot;                    
+##  [17] &quot;tBodyAcc_sma__&quot;                      
+##  [18] &quot;tBodyAcc_energy___X&quot;                 
+##  [19] &quot;tBodyAcc_energy___Y&quot;                 
+##  [20] &quot;tBodyAcc_energy___Z&quot;                 
+##  [21] &quot;tBodyAcc_iqr___X&quot;                    
+##  [22] &quot;tBodyAcc_iqr___Y&quot;                    
+##  [23] &quot;tBodyAcc_iqr___Z&quot;                    
+##  [24] &quot;tBodyAcc_entropy___X&quot;                
+##  [25] &quot;tBodyAcc_entropy___Y&quot;                
+##  [26] &quot;tBodyAcc_entropy___Z&quot;                
+##  [27] &quot;tBodyAcc_arCoeff___X_1&quot;              
+##  [28] &quot;tBodyAcc_arCoeff___X_2&quot;              
+##  [29] &quot;tBodyAcc_arCoeff___X_3&quot;              
+##  [30] &quot;tBodyAcc_arCoeff___X_4&quot;              
+##  [31] &quot;tBodyAcc_arCoeff___Y_1&quot;              
+##  [32] &quot;tBodyAcc_arCoeff___Y_2&quot;              
+##  [33] &quot;tBodyAcc_arCoeff___Y_3&quot;              
+##  [34] &quot;tBodyAcc_arCoeff___Y_4&quot;              
+##  [35] &quot;tBodyAcc_arCoeff___Z_1&quot;              
+##  [36] &quot;tBodyAcc_arCoeff___Z_2&quot;              
+##  [37] &quot;tBodyAcc_arCoeff___Z_3&quot;              
+##  [38] &quot;tBodyAcc_arCoeff___Z_4&quot;              
+##  [39] &quot;tBodyAcc_correlation___X_Y&quot;          
+##  [40] &quot;tBodyAcc_correlation___X_Z&quot;          
+##  [41] &quot;tBodyAcc_correlation___Y_Z&quot;          
+##  [42] &quot;tGravityAcc_mean___X&quot;                
+##  [43] &quot;tGravityAcc_mean___Y&quot;                
+##  [44] &quot;tGravityAcc_mean___Z&quot;                
+##  [45] &quot;tGravityAcc_std___X&quot;                 
+##  [46] &quot;tGravityAcc_std___Y&quot;                 
+##  [47] &quot;tGravityAcc_std___Z&quot;                 
+##  [48] &quot;tGravityAcc_mad___X&quot;                 
+##  [49] &quot;tGravityAcc_mad___Y&quot;                 
+##  [50] &quot;tGravityAcc_mad___Z&quot;                 
+##  [51] &quot;tGravityAcc_max___X&quot;                 
+##  [52] &quot;tGravityAcc_max___Y&quot;                 
+##  [53] &quot;tGravityAcc_max___Z&quot;                 
+##  [54] &quot;tGravityAcc_min___X&quot;                 
+##  [55] &quot;tGravityAcc_min___Y&quot;                 
+##  [56] &quot;tGravityAcc_min___Z&quot;                 
+##  [57] &quot;tGravityAcc_sma__&quot;                   
+##  [58] &quot;tGravityAcc_energy___X&quot;              
+##  [59] &quot;tGravityAcc_energy___Y&quot;              
+##  [60] &quot;tGravityAcc_energy___Z&quot;              
+##  [61] &quot;tGravityAcc_iqr___X&quot;                 
+##  [62] &quot;tGravityAcc_iqr___Y&quot;                 
+##  [63] &quot;tGravityAcc_iqr___Z&quot;                 
+##  [64] &quot;tGravityAcc_entropy___X&quot;             
+##  [65] &quot;tGravityAcc_entropy___Y&quot;             
+##  [66] &quot;tGravityAcc_entropy___Z&quot;             
+##  [67] &quot;tGravityAcc_arCoeff___X_1&quot;           
+##  [68] &quot;tGravityAcc_arCoeff___X_2&quot;           
+##  [69] &quot;tGravityAcc_arCoeff___X_3&quot;           
+##  [70] &quot;tGravityAcc_arCoeff___X_4&quot;           
+##  [71] &quot;tGravityAcc_arCoeff___Y_1&quot;           
+##  [72] &quot;tGravityAcc_arCoeff___Y_2&quot;           
+##  [73] &quot;tGravityAcc_arCoeff___Y_3&quot;           
+##  [74] &quot;tGravityAcc_arCoeff___Y_4&quot;           
+##  [75] &quot;tGravityAcc_arCoeff___Z_1&quot;           
+##  [76] &quot;tGravityAcc_arCoeff___Z_2&quot;           
+##  [77] &quot;tGravityAcc_arCoeff___Z_3&quot;           
+##  [78] &quot;tGravityAcc_arCoeff___Z_4&quot;           
+##  [79] &quot;tGravityAcc_correlation___X_Y&quot;       
+##  [80] &quot;tGravityAcc_correlation___X_Z&quot;       
+##  [81] &quot;tGravityAcc_correlation___Y_Z&quot;       
+##  [82] &quot;tBodyAccJerk_mean___X&quot;               
+##  [83] &quot;tBodyAccJerk_mean___Y&quot;               
+##  [84] &quot;tBodyAccJerk_mean___Z&quot;               
+##  [85] &quot;tBodyAccJerk_std___X&quot;                
+##  [86] &quot;tBodyAccJerk_std___Y&quot;                
+##  [87] &quot;tBodyAccJerk_std___Z&quot;                
+##  [88] &quot;tBodyAccJerk_mad___X&quot;                
+##  [89] &quot;tBodyAccJerk_mad___Y&quot;                
+##  [90] &quot;tBodyAccJerk_mad___Z&quot;                
+##  [91] &quot;tBodyAccJerk_max___X&quot;                
+##  [92] &quot;tBodyAccJerk_max___Y&quot;                
+##  [93] &quot;tBodyAccJerk_max___Z&quot;                
+##  [94] &quot;tBodyAccJerk_min___X&quot;                
+##  [95] &quot;tBodyAccJerk_min___Y&quot;                
+##  [96] &quot;tBodyAccJerk_min___Z&quot;                
+##  [97] &quot;tBodyAccJerk_sma__&quot;                  
+##  [98] &quot;tBodyAccJerk_energy___X&quot;             
+##  [99] &quot;tBodyAccJerk_energy___Y&quot;             
+## [100] &quot;tBodyAccJerk_energy___Z&quot;             
+## [101] &quot;tBodyAccJerk_iqr___X&quot;                
+## [102] &quot;tBodyAccJerk_iqr___Y&quot;                
+## [103] &quot;tBodyAccJerk_iqr___Z&quot;                
+## [104] &quot;tBodyAccJerk_entropy___X&quot;            
+## [105] &quot;tBodyAccJerk_entropy___Y&quot;            
+## [106] &quot;tBodyAccJerk_entropy___Z&quot;            
+## [107] &quot;tBodyAccJerk_arCoeff___X_1&quot;          
+## [108] &quot;tBodyAccJerk_arCoeff___X_2&quot;          
+## [109] &quot;tBodyAccJerk_arCoeff___X_3&quot;          
+## [110] &quot;tBodyAccJerk_arCoeff___X_4&quot;          
+## [111] &quot;tBodyAccJerk_arCoeff___Y_1&quot;          
+## [112] &quot;tBodyAccJerk_arCoeff___Y_2&quot;          
+## [113] &quot;tBodyAccJerk_arCoeff___Y_3&quot;          
+## [114] &quot;tBodyAccJerk_arCoeff___Y_4&quot;          
+## [115] &quot;tBodyAccJerk_arCoeff___Z_1&quot;          
+## [116] &quot;tBodyAccJerk_arCoeff___Z_2&quot;          
+## [117] &quot;tBodyAccJerk_arCoeff___Z_3&quot;          
+## [118] &quot;tBodyAccJerk_arCoeff___Z_4&quot;          
+## [119] &quot;tBodyAccJerk_correlation___X_Y&quot;      
+## [120] &quot;tBodyAccJerk_correlation___X_Z&quot;      
+## [121] &quot;tBodyAccJerk_correlation___Y_Z&quot;      
+## [122] &quot;tBodyGyro_mean___X&quot;                  
+## [123] &quot;tBodyGyro_mean___Y&quot;                  
+## [124] &quot;tBodyGyro_mean___Z&quot;                  
+## [125] &quot;tBodyGyro_std___X&quot;                   
+## [126] &quot;tBodyGyro_std___Y&quot;                   
+## [127] &quot;tBodyGyro_std___Z&quot;                   
+## [128] &quot;tBodyGyro_mad___X&quot;                   
+## [129] &quot;tBodyGyro_mad___Y&quot;                   
+## [130] &quot;tBodyGyro_mad___Z&quot;                   
+## [131] &quot;tBodyGyro_max___X&quot;                   
+## [132] &quot;tBodyGyro_max___Y&quot;                   
+## [133] &quot;tBodyGyro_max___Z&quot;                   
+## [134] &quot;tBodyGyro_min___X&quot;                   
+## [135] &quot;tBodyGyro_min___Y&quot;                   
+## [136] &quot;tBodyGyro_min___Z&quot;                   
+## [137] &quot;tBodyGyro_sma__&quot;                     
+## [138] &quot;tBodyGyro_energy___X&quot;                
+## [139] &quot;tBodyGyro_energy___Y&quot;                
+## [140] &quot;tBodyGyro_energy___Z&quot;                
+## [141] &quot;tBodyGyro_iqr___X&quot;                   
+## [142] &quot;tBodyGyro_iqr___Y&quot;                   
+## [143] &quot;tBodyGyro_iqr___Z&quot;                   
+## [144] &quot;tBodyGyro_entropy___X&quot;               
+## [145] &quot;tBodyGyro_entropy___Y&quot;               
+## [146] &quot;tBodyGyro_entropy___Z&quot;               
+## [147] &quot;tBodyGyro_arCoeff___X_1&quot;             
+## [148] &quot;tBodyGyro_arCoeff___X_2&quot;             
+## [149] &quot;tBodyGyro_arCoeff___X_3&quot;             
+## [150] &quot;tBodyGyro_arCoeff___X_4&quot;             
+## [151] &quot;tBodyGyro_arCoeff___Y_1&quot;             
+## [152] &quot;tBodyGyro_arCoeff___Y_2&quot;             
+## [153] &quot;tBodyGyro_arCoeff___Y_3&quot;             
+## [154] &quot;tBodyGyro_arCoeff___Y_4&quot;             
+## [155] &quot;tBodyGyro_arCoeff___Z_1&quot;             
+## [156] &quot;tBodyGyro_arCoeff___Z_2&quot;             
+## [157] &quot;tBodyGyro_arCoeff___Z_3&quot;             
+## [158] &quot;tBodyGyro_arCoeff___Z_4&quot;             
+## [159] &quot;tBodyGyro_correlation___X_Y&quot;         
+## [160] &quot;tBodyGyro_correlation___X_Z&quot;         
+## [161] &quot;tBodyGyro_correlation___Y_Z&quot;         
+## [162] &quot;tBodyGyroJerk_mean___X&quot;              
+## [163] &quot;tBodyGyroJerk_mean___Y&quot;              
+## [164] &quot;tBodyGyroJerk_mean___Z&quot;              
+## [165] &quot;tBodyGyroJerk_std___X&quot;               
+## [166] &quot;tBodyGyroJerk_std___Y&quot;               
+## [167] &quot;tBodyGyroJerk_std___Z&quot;               
+## [168] &quot;tBodyGyroJerk_mad___X&quot;               
+## [169] &quot;tBodyGyroJerk_mad___Y&quot;               
+## [170] &quot;tBodyGyroJerk_mad___Z&quot;               
+## [171] &quot;tBodyGyroJerk_max___X&quot;               
+## [172] &quot;tBodyGyroJerk_max___Y&quot;               
+## [173] &quot;tBodyGyroJerk_max___Z&quot;               
+## [174] &quot;tBodyGyroJerk_min___X&quot;               
+## [175] &quot;tBodyGyroJerk_min___Y&quot;               
+## [176] &quot;tBodyGyroJerk_min___Z&quot;               
+## [177] &quot;tBodyGyroJerk_sma__&quot;                 
+## [178] &quot;tBodyGyroJerk_energy___X&quot;            
+## [179] &quot;tBodyGyroJerk_energy___Y&quot;            
+## [180] &quot;tBodyGyroJerk_energy___Z&quot;            
+## [181] &quot;tBodyGyroJerk_iqr___X&quot;               
+## [182] &quot;tBodyGyroJerk_iqr___Y&quot;               
+## [183] &quot;tBodyGyroJerk_iqr___Z&quot;               
+## [184] &quot;tBodyGyroJerk_entropy___X&quot;           
+## [185] &quot;tBodyGyroJerk_entropy___Y&quot;           
+## [186] &quot;tBodyGyroJerk_entropy___Z&quot;           
+## [187] &quot;tBodyGyroJerk_arCoeff___X_1&quot;         
+## [188] &quot;tBodyGyroJerk_arCoeff___X_2&quot;         
+## [189] &quot;tBodyGyroJerk_arCoeff___X_3&quot;         
+## [190] &quot;tBodyGyroJerk_arCoeff___X_4&quot;         
+## [191] &quot;tBodyGyroJerk_arCoeff___Y_1&quot;         
+## [192] &quot;tBodyGyroJerk_arCoeff___Y_2&quot;         
+## [193] &quot;tBodyGyroJerk_arCoeff___Y_3&quot;         
+## [194] &quot;tBodyGyroJerk_arCoeff___Y_4&quot;         
+## [195] &quot;tBodyGyroJerk_arCoeff___Z_1&quot;         
+## [196] &quot;tBodyGyroJerk_arCoeff___Z_2&quot;         
+## [197] &quot;tBodyGyroJerk_arCoeff___Z_3&quot;         
+## [198] &quot;tBodyGyroJerk_arCoeff___Z_4&quot;         
+## [199] &quot;tBodyGyroJerk_correlation___X_Y&quot;     
+## [200] &quot;tBodyGyroJerk_correlation___X_Z&quot;     
+## [201] &quot;tBodyGyroJerk_correlation___Y_Z&quot;     
+## [202] &quot;tBodyAccMag_mean__&quot;                  
+## [203] &quot;tBodyAccMag_std__&quot;                   
+## [204] &quot;tBodyAccMag_mad__&quot;                   
+## [205] &quot;tBodyAccMag_max__&quot;                   
+## [206] &quot;tBodyAccMag_min__&quot;                   
+## [207] &quot;tBodyAccMag_sma__&quot;                   
+## [208] &quot;tBodyAccMag_energy__&quot;                
+## [209] &quot;tBodyAccMag_iqr__&quot;                   
+## [210] &quot;tBodyAccMag_entropy__&quot;               
+## [211] &quot;tBodyAccMag_arCoeff__1&quot;              
+## [212] &quot;tBodyAccMag_arCoeff__2&quot;              
+## [213] &quot;tBodyAccMag_arCoeff__3&quot;              
+## [214] &quot;tBodyAccMag_arCoeff__4&quot;              
+## [215] &quot;tGravityAccMag_mean__&quot;               
+## [216] &quot;tGravityAccMag_std__&quot;                
+## [217] &quot;tGravityAccMag_mad__&quot;                
+## [218] &quot;tGravityAccMag_max__&quot;                
+## [219] &quot;tGravityAccMag_min__&quot;                
+## [220] &quot;tGravityAccMag_sma__&quot;                
+## [221] &quot;tGravityAccMag_energy__&quot;             
+## [222] &quot;tGravityAccMag_iqr__&quot;                
+## [223] &quot;tGravityAccMag_entropy__&quot;            
+## [224] &quot;tGravityAccMag_arCoeff__1&quot;           
+## [225] &quot;tGravityAccMag_arCoeff__2&quot;           
+## [226] &quot;tGravityAccMag_arCoeff__3&quot;           
+## [227] &quot;tGravityAccMag_arCoeff__4&quot;           
+## [228] &quot;tBodyAccJerkMag_mean__&quot;              
+## [229] &quot;tBodyAccJerkMag_std__&quot;               
+## [230] &quot;tBodyAccJerkMag_mad__&quot;               
+## [231] &quot;tBodyAccJerkMag_max__&quot;               
+## [232] &quot;tBodyAccJerkMag_min__&quot;               
+## [233] &quot;tBodyAccJerkMag_sma__&quot;               
+## [234] &quot;tBodyAccJerkMag_energy__&quot;            
+## [235] &quot;tBodyAccJerkMag_iqr__&quot;               
+## [236] &quot;tBodyAccJerkMag_entropy__&quot;           
+## [237] &quot;tBodyAccJerkMag_arCoeff__1&quot;          
+## [238] &quot;tBodyAccJerkMag_arCoeff__2&quot;          
+## [239] &quot;tBodyAccJerkMag_arCoeff__3&quot;          
+## [240] &quot;tBodyAccJerkMag_arCoeff__4&quot;          
+## [241] &quot;tBodyGyroMag_mean__&quot;                 
+## [242] &quot;tBodyGyroMag_std__&quot;                  
+## [243] &quot;tBodyGyroMag_mad__&quot;                  
+## [244] &quot;tBodyGyroMag_max__&quot;                  
+## [245] &quot;tBodyGyroMag_min__&quot;                  
+## [246] &quot;tBodyGyroMag_sma__&quot;                  
+## [247] &quot;tBodyGyroMag_energy__&quot;               
+## [248] &quot;tBodyGyroMag_iqr__&quot;                  
+## [249] &quot;tBodyGyroMag_entropy__&quot;              
+## [250] &quot;tBodyGyroMag_arCoeff__1&quot;             
+## [251] &quot;tBodyGyroMag_arCoeff__2&quot;             
+## [252] &quot;tBodyGyroMag_arCoeff__3&quot;             
+## [253] &quot;tBodyGyroMag_arCoeff__4&quot;             
+## [254] &quot;tBodyGyroJerkMag_mean__&quot;             
+## [255] &quot;tBodyGyroJerkMag_std__&quot;              
+## [256] &quot;tBodyGyroJerkMag_mad__&quot;              
+## [257] &quot;tBodyGyroJerkMag_max__&quot;              
+## [258] &quot;tBodyGyroJerkMag_min__&quot;              
+## [259] &quot;tBodyGyroJerkMag_sma__&quot;              
+## [260] &quot;tBodyGyroJerkMag_energy__&quot;           
+## [261] &quot;tBodyGyroJerkMag_iqr__&quot;              
+## [262] &quot;tBodyGyroJerkMag_entropy__&quot;          
+## [263] &quot;tBodyGyroJerkMag_arCoeff__1&quot;         
+## [264] &quot;tBodyGyroJerkMag_arCoeff__2&quot;         
+## [265] &quot;tBodyGyroJerkMag_arCoeff__3&quot;         
+## [266] &quot;tBodyGyroJerkMag_arCoeff__4&quot;         
+## [267] &quot;fBodyAcc_mean___X&quot;                   
+## [268] &quot;fBodyAcc_mean___Y&quot;                   
+## [269] &quot;fBodyAcc_mean___Z&quot;                   
+## [270] &quot;fBodyAcc_std___X&quot;                    
+## [271] &quot;fBodyAcc_std___Y&quot;                    
+## [272] &quot;fBodyAcc_std___Z&quot;                    
+## [273] &quot;fBodyAcc_mad___X&quot;                    
+## [274] &quot;fBodyAcc_mad___Y&quot;                    
+## [275] &quot;fBodyAcc_mad___Z&quot;                    
+## [276] &quot;fBodyAcc_max___X&quot;                    
+## [277] &quot;fBodyAcc_max___Y&quot;                    
+## [278] &quot;fBodyAcc_max___Z&quot;                    
+## [279] &quot;fBodyAcc_min___X&quot;                    
+## [280] &quot;fBodyAcc_min___Y&quot;                    
+## [281] &quot;fBodyAcc_min___Z&quot;                    
+## [282] &quot;fBodyAcc_sma__&quot;                      
+## [283] &quot;fBodyAcc_energy___X&quot;                 
+## [284] &quot;fBodyAcc_energy___Y&quot;                 
+## [285] &quot;fBodyAcc_energy___Z&quot;                 
+## [286] &quot;fBodyAcc_iqr___X&quot;                    
+## [287] &quot;fBodyAcc_iqr___Y&quot;                    
+## [288] &quot;fBodyAcc_iqr___Z&quot;                    
+## [289] &quot;fBodyAcc_entropy___X&quot;                
+## [290] &quot;fBodyAcc_entropy___Y&quot;                
+## [291] &quot;fBodyAcc_entropy___Z&quot;                
+## [292] &quot;fBodyAcc_maxInds_X&quot;                  
+## [293] &quot;fBodyAcc_maxInds_Y&quot;                  
+## [294] &quot;fBodyAcc_maxInds_Z&quot;                  
+## [295] &quot;fBodyAcc_meanFreq___X&quot;               
+## [296] &quot;fBodyAcc_meanFreq___Y&quot;               
+## [297] &quot;fBodyAcc_meanFreq___Z&quot;               
+## [298] &quot;fBodyAcc_skewness___X&quot;               
+## [299] &quot;fBodyAcc_kurtosis___X&quot;               
+## [300] &quot;fBodyAcc_skewness___Y&quot;               
+## [301] &quot;fBodyAcc_kurtosis___Y&quot;               
+## [302] &quot;fBodyAcc_skewness___Z&quot;               
+## [303] &quot;fBodyAcc_kurtosis___Z&quot;               
+## [304] &quot;fBodyAcc_bandsEnergy___1_8&quot;          
+## [305] &quot;fBodyAcc_bandsEnergy___9_16&quot;         
+## [306] &quot;fBodyAcc_bandsEnergy___17_24&quot;        
+## [307] &quot;fBodyAcc_bandsEnergy___25_32&quot;        
+## [308] &quot;fBodyAcc_bandsEnergy___33_40&quot;        
+## [309] &quot;fBodyAcc_bandsEnergy___41_48&quot;        
+## [310] &quot;fBodyAcc_bandsEnergy___49_56&quot;        
+## [311] &quot;fBodyAcc_bandsEnergy___57_64&quot;        
+## [312] &quot;fBodyAcc_bandsEnergy___1_16&quot;         
+## [313] &quot;fBodyAcc_bandsEnergy___17_32&quot;        
+## [314] &quot;fBodyAcc_bandsEnergy___33_48&quot;        
+## [315] &quot;fBodyAcc_bandsEnergy___49_64&quot;        
+## [316] &quot;fBodyAcc_bandsEnergy___1_24&quot;         
+## [317] &quot;fBodyAcc_bandsEnergy___25_48&quot;        
+## [318] &quot;fBodyAcc_bandsEnergy___1_8&quot;          
+## [319] &quot;fBodyAcc_bandsEnergy___9_16&quot;         
+## [320] &quot;fBodyAcc_bandsEnergy___17_24&quot;        
+## [321] &quot;fBodyAcc_bandsEnergy___25_32&quot;        
+## [322] &quot;fBodyAcc_bandsEnergy___33_40&quot;        
+## [323] &quot;fBodyAcc_bandsEnergy___41_48&quot;        
+## [324] &quot;fBodyAcc_bandsEnergy___49_56&quot;        
+## [325] &quot;fBodyAcc_bandsEnergy___57_64&quot;        
+## [326] &quot;fBodyAcc_bandsEnergy___1_16&quot;         
+## [327] &quot;fBodyAcc_bandsEnergy___17_32&quot;        
+## [328] &quot;fBodyAcc_bandsEnergy___33_48&quot;        
+## [329] &quot;fBodyAcc_bandsEnergy___49_64&quot;        
+## [330] &quot;fBodyAcc_bandsEnergy___1_24&quot;         
+## [331] &quot;fBodyAcc_bandsEnergy___25_48&quot;        
+## [332] &quot;fBodyAcc_bandsEnergy___1_8&quot;          
+## [333] &quot;fBodyAcc_bandsEnergy___9_16&quot;         
+## [334] &quot;fBodyAcc_bandsEnergy___17_24&quot;        
+## [335] &quot;fBodyAcc_bandsEnergy___25_32&quot;        
+## [336] &quot;fBodyAcc_bandsEnergy___33_40&quot;        
+## [337] &quot;fBodyAcc_bandsEnergy___41_48&quot;        
+## [338] &quot;fBodyAcc_bandsEnergy___49_56&quot;        
+## [339] &quot;fBodyAcc_bandsEnergy___57_64&quot;        
+## [340] &quot;fBodyAcc_bandsEnergy___1_16&quot;         
+## [341] &quot;fBodyAcc_bandsEnergy___17_32&quot;        
+## [342] &quot;fBodyAcc_bandsEnergy___33_48&quot;        
+## [343] &quot;fBodyAcc_bandsEnergy___49_64&quot;        
+## [344] &quot;fBodyAcc_bandsEnergy___1_24&quot;         
+## [345] &quot;fBodyAcc_bandsEnergy___25_48&quot;        
+## [346] &quot;fBodyAccJerk_mean___X&quot;               
+## [347] &quot;fBodyAccJerk_mean___Y&quot;               
+## [348] &quot;fBodyAccJerk_mean___Z&quot;               
+## [349] &quot;fBodyAccJerk_std___X&quot;                
+## [350] &quot;fBodyAccJerk_std___Y&quot;                
+## [351] &quot;fBodyAccJerk_std___Z&quot;                
+## [352] &quot;fBodyAccJerk_mad___X&quot;                
+## [353] &quot;fBodyAccJerk_mad___Y&quot;                
+## [354] &quot;fBodyAccJerk_mad___Z&quot;                
+## [355] &quot;fBodyAccJerk_max___X&quot;                
+## [356] &quot;fBodyAccJerk_max___Y&quot;                
+## [357] &quot;fBodyAccJerk_max___Z&quot;                
+## [358] &quot;fBodyAccJerk_min___X&quot;                
+## [359] &quot;fBodyAccJerk_min___Y&quot;                
+## [360] &quot;fBodyAccJerk_min___Z&quot;                
+## [361] &quot;fBodyAccJerk_sma__&quot;                  
+## [362] &quot;fBodyAccJerk_energy___X&quot;             
+## [363] &quot;fBodyAccJerk_energy___Y&quot;             
+## [364] &quot;fBodyAccJerk_energy___Z&quot;             
+## [365] &quot;fBodyAccJerk_iqr___X&quot;                
+## [366] &quot;fBodyAccJerk_iqr___Y&quot;                
+## [367] &quot;fBodyAccJerk_iqr___Z&quot;                
+## [368] &quot;fBodyAccJerk_entropy___X&quot;            
+## [369] &quot;fBodyAccJerk_entropy___Y&quot;            
+## [370] &quot;fBodyAccJerk_entropy___Z&quot;            
+## [371] &quot;fBodyAccJerk_maxInds_X&quot;              
+## [372] &quot;fBodyAccJerk_maxInds_Y&quot;              
+## [373] &quot;fBodyAccJerk_maxInds_Z&quot;              
+## [374] &quot;fBodyAccJerk_meanFreq___X&quot;           
+## [375] &quot;fBodyAccJerk_meanFreq___Y&quot;           
+## [376] &quot;fBodyAccJerk_meanFreq___Z&quot;           
+## [377] &quot;fBodyAccJerk_skewness___X&quot;           
+## [378] &quot;fBodyAccJerk_kurtosis___X&quot;           
+## [379] &quot;fBodyAccJerk_skewness___Y&quot;           
+## [380] &quot;fBodyAccJerk_kurtosis___Y&quot;           
+## [381] &quot;fBodyAccJerk_skewness___Z&quot;           
+## [382] &quot;fBodyAccJerk_kurtosis___Z&quot;           
+## [383] &quot;fBodyAccJerk_bandsEnergy___1_8&quot;      
+## [384] &quot;fBodyAccJerk_bandsEnergy___9_16&quot;     
+## [385] &quot;fBodyAccJerk_bandsEnergy___17_24&quot;    
+## [386] &quot;fBodyAccJerk_bandsEnergy___25_32&quot;    
+## [387] &quot;fBodyAccJerk_bandsEnergy___33_40&quot;    
+## [388] &quot;fBodyAccJerk_bandsEnergy___41_48&quot;    
+## [389] &quot;fBodyAccJerk_bandsEnergy___49_56&quot;    
+## [390] &quot;fBodyAccJerk_bandsEnergy___57_64&quot;    
+## [391] &quot;fBodyAccJerk_bandsEnergy___1_16&quot;     
+## [392] &quot;fBodyAccJerk_bandsEnergy___17_32&quot;    
+## [393] &quot;fBodyAccJerk_bandsEnergy___33_48&quot;    
+## [394] &quot;fBodyAccJerk_bandsEnergy___49_64&quot;    
+## [395] &quot;fBodyAccJerk_bandsEnergy___1_24&quot;     
+## [396] &quot;fBodyAccJerk_bandsEnergy___25_48&quot;    
+## [397] &quot;fBodyAccJerk_bandsEnergy___1_8&quot;      
+## [398] &quot;fBodyAccJerk_bandsEnergy___9_16&quot;     
+## [399] &quot;fBodyAccJerk_bandsEnergy___17_24&quot;    
+## [400] &quot;fBodyAccJerk_bandsEnergy___25_32&quot;    
+## [401] &quot;fBodyAccJerk_bandsEnergy___33_40&quot;    
+## [402] &quot;fBodyAccJerk_bandsEnergy___41_48&quot;    
+## [403] &quot;fBodyAccJerk_bandsEnergy___49_56&quot;    
+## [404] &quot;fBodyAccJerk_bandsEnergy___57_64&quot;    
+## [405] &quot;fBodyAccJerk_bandsEnergy___1_16&quot;     
+## [406] &quot;fBodyAccJerk_bandsEnergy___17_32&quot;    
+## [407] &quot;fBodyAccJerk_bandsEnergy___33_48&quot;    
+## [408] &quot;fBodyAccJerk_bandsEnergy___49_64&quot;    
+## [409] &quot;fBodyAccJerk_bandsEnergy___1_24&quot;     
+## [410] &quot;fBodyAccJerk_bandsEnergy___25_48&quot;    
+## [411] &quot;fBodyAccJerk_bandsEnergy___1_8&quot;      
+## [412] &quot;fBodyAccJerk_bandsEnergy___9_16&quot;     
+## [413] &quot;fBodyAccJerk_bandsEnergy___17_24&quot;    
+## [414] &quot;fBodyAccJerk_bandsEnergy___25_32&quot;    
+## [415] &quot;fBodyAccJerk_bandsEnergy___33_40&quot;    
+## [416] &quot;fBodyAccJerk_bandsEnergy___41_48&quot;    
+## [417] &quot;fBodyAccJerk_bandsEnergy___49_56&quot;    
+## [418] &quot;fBodyAccJerk_bandsEnergy___57_64&quot;    
+## [419] &quot;fBodyAccJerk_bandsEnergy___1_16&quot;     
+## [420] &quot;fBodyAccJerk_bandsEnergy___17_32&quot;    
+## [421] &quot;fBodyAccJerk_bandsEnergy___33_48&quot;    
+## [422] &quot;fBodyAccJerk_bandsEnergy___49_64&quot;    
+## [423] &quot;fBodyAccJerk_bandsEnergy___1_24&quot;     
+## [424] &quot;fBodyAccJerk_bandsEnergy___25_48&quot;    
+## [425] &quot;fBodyGyro_mean___X&quot;                  
+## [426] &quot;fBodyGyro_mean___Y&quot;                  
+## [427] &quot;fBodyGyro_mean___Z&quot;                  
+## [428] &quot;fBodyGyro_std___X&quot;                   
+## [429] &quot;fBodyGyro_std___Y&quot;                   
+## [430] &quot;fBodyGyro_std___Z&quot;                   
+## [431] &quot;fBodyGyro_mad___X&quot;                   
+## [432] &quot;fBodyGyro_mad___Y&quot;                   
+## [433] &quot;fBodyGyro_mad___Z&quot;                   
+## [434] &quot;fBodyGyro_max___X&quot;                   
+## [435] &quot;fBodyGyro_max___Y&quot;                   
+## [436] &quot;fBodyGyro_max___Z&quot;                   
+## [437] &quot;fBodyGyro_min___X&quot;                   
+## [438] &quot;fBodyGyro_min___Y&quot;                   
+## [439] &quot;fBodyGyro_min___Z&quot;                   
+## [440] &quot;fBodyGyro_sma__&quot;                     
+## [441] &quot;fBodyGyro_energy___X&quot;                
+## [442] &quot;fBodyGyro_energy___Y&quot;                
+## [443] &quot;fBodyGyro_energy___Z&quot;                
+## [444] &quot;fBodyGyro_iqr___X&quot;                   
+## [445] &quot;fBodyGyro_iqr___Y&quot;                   
+## [446] &quot;fBodyGyro_iqr___Z&quot;                   
+## [447] &quot;fBodyGyro_entropy___X&quot;               
+## [448] &quot;fBodyGyro_entropy___Y&quot;               
+## [449] &quot;fBodyGyro_entropy___Z&quot;               
+## [450] &quot;fBodyGyro_maxInds_X&quot;                 
+## [451] &quot;fBodyGyro_maxInds_Y&quot;                 
+## [452] &quot;fBodyGyro_maxInds_Z&quot;                 
+## [453] &quot;fBodyGyro_meanFreq___X&quot;              
+## [454] &quot;fBodyGyro_meanFreq___Y&quot;              
+## [455] &quot;fBodyGyro_meanFreq___Z&quot;              
+## [456] &quot;fBodyGyro_skewness___X&quot;              
+## [457] &quot;fBodyGyro_kurtosis___X&quot;              
+## [458] &quot;fBodyGyro_skewness___Y&quot;              
+## [459] &quot;fBodyGyro_kurtosis___Y&quot;              
+## [460] &quot;fBodyGyro_skewness___Z&quot;              
+## [461] &quot;fBodyGyro_kurtosis___Z&quot;              
+## [462] &quot;fBodyGyro_bandsEnergy___1_8&quot;         
+## [463] &quot;fBodyGyro_bandsEnergy___9_16&quot;        
+## [464] &quot;fBodyGyro_bandsEnergy___17_24&quot;       
+## [465] &quot;fBodyGyro_bandsEnergy___25_32&quot;       
+## [466] &quot;fBodyGyro_bandsEnergy___33_40&quot;       
+## [467] &quot;fBodyGyro_bandsEnergy___41_48&quot;       
+## [468] &quot;fBodyGyro_bandsEnergy___49_56&quot;       
+## [469] &quot;fBodyGyro_bandsEnergy___57_64&quot;       
+## [470] &quot;fBodyGyro_bandsEnergy___1_16&quot;        
+## [471] &quot;fBodyGyro_bandsEnergy___17_32&quot;       
+## [472] &quot;fBodyGyro_bandsEnergy___33_48&quot;       
+## [473] &quot;fBodyGyro_bandsEnergy___49_64&quot;       
+## [474] &quot;fBodyGyro_bandsEnergy___1_24&quot;        
+## [475] &quot;fBodyGyro_bandsEnergy___25_48&quot;       
+## [476] &quot;fBodyGyro_bandsEnergy___1_8&quot;         
+## [477] &quot;fBodyGyro_bandsEnergy___9_16&quot;        
+## [478] &quot;fBodyGyro_bandsEnergy___17_24&quot;       
+## [479] &quot;fBodyGyro_bandsEnergy___25_32&quot;       
+## [480] &quot;fBodyGyro_bandsEnergy___33_40&quot;       
+## [481] &quot;fBodyGyro_bandsEnergy___41_48&quot;       
+## [482] &quot;fBodyGyro_bandsEnergy___49_56&quot;       
+## [483] &quot;fBodyGyro_bandsEnergy___57_64&quot;       
+## [484] &quot;fBodyGyro_bandsEnergy___1_16&quot;        
+## [485] &quot;fBodyGyro_bandsEnergy___17_32&quot;       
+## [486] &quot;fBodyGyro_bandsEnergy___33_48&quot;       
+## [487] &quot;fBodyGyro_bandsEnergy___49_64&quot;       
+## [488] &quot;fBodyGyro_bandsEnergy___1_24&quot;        
+## [489] &quot;fBodyGyro_bandsEnergy___25_48&quot;       
+## [490] &quot;fBodyGyro_bandsEnergy___1_8&quot;         
+## [491] &quot;fBodyGyro_bandsEnergy___9_16&quot;        
+## [492] &quot;fBodyGyro_bandsEnergy___17_24&quot;       
+## [493] &quot;fBodyGyro_bandsEnergy___25_32&quot;       
+## [494] &quot;fBodyGyro_bandsEnergy___33_40&quot;       
+## [495] &quot;fBodyGyro_bandsEnergy___41_48&quot;       
+## [496] &quot;fBodyGyro_bandsEnergy___49_56&quot;       
+## [497] &quot;fBodyGyro_bandsEnergy___57_64&quot;       
+## [498] &quot;fBodyGyro_bandsEnergy___1_16&quot;        
+## [499] &quot;fBodyGyro_bandsEnergy___17_32&quot;       
+## [500] &quot;fBodyGyro_bandsEnergy___33_48&quot;       
+## [501] &quot;fBodyGyro_bandsEnergy___49_64&quot;       
+## [502] &quot;fBodyGyro_bandsEnergy___1_24&quot;        
+## [503] &quot;fBodyGyro_bandsEnergy___25_48&quot;       
+## [504] &quot;fBodyAccMag_mean__&quot;                  
+## [505] &quot;fBodyAccMag_std__&quot;                   
+## [506] &quot;fBodyAccMag_mad__&quot;                   
+## [507] &quot;fBodyAccMag_max__&quot;                   
+## [508] &quot;fBodyAccMag_min__&quot;                   
+## [509] &quot;fBodyAccMag_sma__&quot;                   
+## [510] &quot;fBodyAccMag_energy__&quot;                
+## [511] &quot;fBodyAccMag_iqr__&quot;                   
+## [512] &quot;fBodyAccMag_entropy__&quot;               
+## [513] &quot;fBodyAccMag_maxInds&quot;                 
+## [514] &quot;fBodyAccMag_meanFreq__&quot;              
+## [515] &quot;fBodyAccMag_skewness__&quot;              
+## [516] &quot;fBodyAccMag_kurtosis__&quot;              
+## [517] &quot;fBodyBodyAccJerkMag_mean__&quot;          
+## [518] &quot;fBodyBodyAccJerkMag_std__&quot;           
+## [519] &quot;fBodyBodyAccJerkMag_mad__&quot;           
+## [520] &quot;fBodyBodyAccJerkMag_max__&quot;           
+## [521] &quot;fBodyBodyAccJerkMag_min__&quot;           
+## [522] &quot;fBodyBodyAccJerkMag_sma__&quot;           
+## [523] &quot;fBodyBodyAccJerkMag_energy__&quot;        
+## [524] &quot;fBodyBodyAccJerkMag_iqr__&quot;           
+## [525] &quot;fBodyBodyAccJerkMag_entropy__&quot;       
+## [526] &quot;fBodyBodyAccJerkMag_maxInds&quot;         
+## [527] &quot;fBodyBodyAccJerkMag_meanFreq__&quot;      
+## [528] &quot;fBodyBodyAccJerkMag_skewness__&quot;      
+## [529] &quot;fBodyBodyAccJerkMag_kurtosis__&quot;      
+## [530] &quot;fBodyBodyGyroMag_mean__&quot;             
+## [531] &quot;fBodyBodyGyroMag_std__&quot;              
+## [532] &quot;fBodyBodyGyroMag_mad__&quot;              
+## [533] &quot;fBodyBodyGyroMag_max__&quot;              
+## [534] &quot;fBodyBodyGyroMag_min__&quot;              
+## [535] &quot;fBodyBodyGyroMag_sma__&quot;              
+## [536] &quot;fBodyBodyGyroMag_energy__&quot;           
+## [537] &quot;fBodyBodyGyroMag_iqr__&quot;              
+## [538] &quot;fBodyBodyGyroMag_entropy__&quot;          
+## [539] &quot;fBodyBodyGyroMag_maxInds&quot;            
+## [540] &quot;fBodyBodyGyroMag_meanFreq__&quot;         
+## [541] &quot;fBodyBodyGyroMag_skewness__&quot;         
+## [542] &quot;fBodyBodyGyroMag_kurtosis__&quot;         
+## [543] &quot;fBodyBodyGyroJerkMag_mean__&quot;         
+## [544] &quot;fBodyBodyGyroJerkMag_std__&quot;          
+## [545] &quot;fBodyBodyGyroJerkMag_mad__&quot;          
+## [546] &quot;fBodyBodyGyroJerkMag_max__&quot;          
+## [547] &quot;fBodyBodyGyroJerkMag_min__&quot;          
+## [548] &quot;fBodyBodyGyroJerkMag_sma__&quot;          
+## [549] &quot;fBodyBodyGyroJerkMag_energy__&quot;       
+## [550] &quot;fBodyBodyGyroJerkMag_iqr__&quot;          
+## [551] &quot;fBodyBodyGyroJerkMag_entropy__&quot;      
+## [552] &quot;fBodyBodyGyroJerkMag_maxInds&quot;        
+## [553] &quot;fBodyBodyGyroJerkMag_meanFreq__&quot;     
+## [554] &quot;fBodyBodyGyroJerkMag_skewness__&quot;     
+## [555] &quot;fBodyBodyGyroJerkMag_kurtosis__&quot;     
+## [556] &quot;angle_tBodyAccMean_gravity_&quot;         
+## [557] &quot;angle_tBodyAccJerkMean__gravityMean_&quot;
+## [558] &quot;angle_tBodyGyroMean_gravityMean_&quot;    
+## [559] &quot;angle_tBodyGyroJerkMean_gravityMean_&quot;
+## [560] &quot;angle_X_gravityMean_&quot;                
+## [561] &quot;angle_Y_gravityMean_&quot;                
+## [562] &quot;angle_Z_gravityMean_&quot;                
+## [563] &quot;activity_id&quot;
+</code></pre>
+
+<h1>Use descriptive activity names to name the activities in the data set</h1>
+
+<p>read the activity descriptive labels</p>
+
+<pre><code class="r">activities&lt;-read.table(&quot;UCI HAR Dataset/activity_labels.txt&quot;)
+</code></pre>
+
+<p>doublecheck for the orders of activities</p>
+
+<pre><code class="r">activities$v2&lt;-factor(activities$V2, c(&quot;WALKING&quot;, &quot;WALKING_UPSTAIRS&quot;, &quot;WALKING_DOWNSTAIRS&quot;, &quot;SITTING&quot;, &quot;STANDING&quot;, &quot;LAYING&quot;))
+totaldata$activity_descriptive_label&lt;-activities$V2[totaldata$activity_id]
+
+levels(totaldata$activity_descriptive_label)
+</code></pre>
+
+<pre><code>## [1] &quot;LAYING&quot;             &quot;SITTING&quot;            &quot;STANDING&quot;          
+## [4] &quot;WALKING&quot;            &quot;WALKING_DOWNSTAIRS&quot; &quot;WALKING_UPSTAIRS&quot;
+</code></pre>
+
+<p>removing extra data after using them</p>
+
+<pre><code class="r">rm(list=c(&quot;activities&quot;, &quot;features&quot;))
+</code></pre>
+
+<h1>Extract only the measurements that compute mean or standard deviation</h1>
+
+<p>using the names I will extract all columns containing the words &ldquo;mean&rdquo; or &ldquo;std&rdquo; in their names plus activity_descriptive_label which is the label of each row</p>
+
+<pre><code class="r">totaldata_meanstd&lt;-totaldata[, sort(c(grep(&quot;mean&quot;, names(totaldata)),
+                                    grep(&quot;std&quot;, names(totaldata)),
+                                    grep(&quot;activity_descriptive_label&quot;, names(totaldata))))]
+
+names(totaldata_meanstd)
+</code></pre>
+
+<pre><code>##  [1] &quot;tBodyAcc_mean___X&quot;               &quot;tBodyAcc_mean___Y&quot;              
+##  [3] &quot;tBodyAcc_mean___Z&quot;               &quot;tBodyAcc_std___X&quot;               
+##  [5] &quot;tBodyAcc_std___Y&quot;                &quot;tBodyAcc_std___Z&quot;               
+##  [7] &quot;tGravityAcc_mean___X&quot;            &quot;tGravityAcc_mean___Y&quot;           
+##  [9] &quot;tGravityAcc_mean___Z&quot;            &quot;tGravityAcc_std___X&quot;            
+## [11] &quot;tGravityAcc_std___Y&quot;             &quot;tGravityAcc_std___Z&quot;            
+## [13] &quot;tBodyAccJerk_mean___X&quot;           &quot;tBodyAccJerk_mean___Y&quot;          
+## [15] &quot;tBodyAccJerk_mean___Z&quot;           &quot;tBodyAccJerk_std___X&quot;           
+## [17] &quot;tBodyAccJerk_std___Y&quot;            &quot;tBodyAccJerk_std___Z&quot;           
+## [19] &quot;tBodyGyro_mean___X&quot;              &quot;tBodyGyro_mean___Y&quot;             
+## [21] &quot;tBodyGyro_mean___Z&quot;              &quot;tBodyGyro_std___X&quot;              
+## [23] &quot;tBodyGyro_std___Y&quot;               &quot;tBodyGyro_std___Z&quot;              
+## [25] &quot;tBodyGyroJerk_mean___X&quot;          &quot;tBodyGyroJerk_mean___Y&quot;         
+## [27] &quot;tBodyGyroJerk_mean___Z&quot;          &quot;tBodyGyroJerk_std___X&quot;          
+## [29] &quot;tBodyGyroJerk_std___Y&quot;           &quot;tBodyGyroJerk_std___Z&quot;          
+## [31] &quot;tBodyAccMag_mean__&quot;              &quot;tBodyAccMag_std__&quot;              
+## [33] &quot;tGravityAccMag_mean__&quot;           &quot;tGravityAccMag_std__&quot;           
+## [35] &quot;tBodyAccJerkMag_mean__&quot;          &quot;tBodyAccJerkMag_std__&quot;          
+## [37] &quot;tBodyGyroMag_mean__&quot;             &quot;tBodyGyroMag_std__&quot;             
+## [39] &quot;tBodyGyroJerkMag_mean__&quot;         &quot;tBodyGyroJerkMag_std__&quot;         
+## [41] &quot;fBodyAcc_mean___X&quot;               &quot;fBodyAcc_mean___Y&quot;              
+## [43] &quot;fBodyAcc_mean___Z&quot;               &quot;fBodyAcc_std___X&quot;               
+## [45] &quot;fBodyAcc_std___Y&quot;                &quot;fBodyAcc_std___Z&quot;               
+## [47] &quot;fBodyAcc_meanFreq___X&quot;           &quot;fBodyAcc_meanFreq___Y&quot;          
+## [49] &quot;fBodyAcc_meanFreq___Z&quot;           &quot;fBodyAccJerk_mean___X&quot;          
+## [51] &quot;fBodyAccJerk_mean___Y&quot;           &quot;fBodyAccJerk_mean___Z&quot;          
+## [53] &quot;fBodyAccJerk_std___X&quot;            &quot;fBodyAccJerk_std___Y&quot;           
+## [55] &quot;fBodyAccJerk_std___Z&quot;            &quot;fBodyAccJerk_meanFreq___X&quot;      
+## [57] &quot;fBodyAccJerk_meanFreq___Y&quot;       &quot;fBodyAccJerk_meanFreq___Z&quot;      
+## [59] &quot;fBodyGyro_mean___X&quot;              &quot;fBodyGyro_mean___Y&quot;             
+## [61] &quot;fBodyGyro_mean___Z&quot;              &quot;fBodyGyro_std___X&quot;              
+## [63] &quot;fBodyGyro_std___Y&quot;               &quot;fBodyGyro_std___Z&quot;              
+## [65] &quot;fBodyGyro_meanFreq___X&quot;          &quot;fBodyGyro_meanFreq___Y&quot;         
+## [67] &quot;fBodyGyro_meanFreq___Z&quot;          &quot;fBodyAccMag_mean__&quot;             
+## [69] &quot;fBodyAccMag_std__&quot;               &quot;fBodyAccMag_meanFreq__&quot;         
+## [71] &quot;fBodyBodyAccJerkMag_mean__&quot;      &quot;fBodyBodyAccJerkMag_std__&quot;      
+## [73] &quot;fBodyBodyAccJerkMag_meanFreq__&quot;  &quot;fBodyBodyGyroMag_mean__&quot;        
+## [75] &quot;fBodyBodyGyroMag_std__&quot;          &quot;fBodyBodyGyroMag_meanFreq__&quot;    
+## [77] &quot;fBodyBodyGyroJerkMag_mean__&quot;     &quot;fBodyBodyGyroJerkMag_std__&quot;     
+## [79] &quot;fBodyBodyGyroJerkMag_meanFreq__&quot; &quot;activity_descriptive_label&quot;
+</code></pre>
+
+<h1>Create an independent tidy data set with the average of each variable for each activity and each subject</h1>
+
+<p>first I split totaldata based on &ldquo;subject_id&rdquo; and &ldquo;activity_descriptive_label&rdquo;</p>
+
+<pre><code class="r">spliteddata&lt;-
+  split(totaldata, list(totaldata$subject_id, totaldata$activity_descriptive_label))
+</code></pre>
+
+<p>then apply the colmeans function for each of splited list of data</p>
+
+<pre><code class="r">tidydata&lt;-sapply(
+  spliteddata, 
+  function(x) colMeans(x[, -which(names(totaldata) %in% 
+                                    c(&quot;subject_id&quot;, 
+                                      &quot;activity_id&quot;,
+                                      &quot;activity_descriptive_label&quot;))]))
+tidydata[1:3, 1:3]
+</code></pre>
+
+<pre><code>##                   1.LAYING 2.LAYING 3.LAYING
+## tBodyAcc_mean___X  0.22160  0.28137  0.27552
+## tBodyAcc_mean___Y -0.04051 -0.01816 -0.01896
+## tBodyAcc_mean___Z -0.11320 -0.10725 -0.10130
+</code></pre>
+
+<p>columns are the combination of subject_id and activity_id.
+For exampe, 1.LAYING means subject &ldquo;1&rdquo;&ldquo; with activity &quot;LAYING&rdquo;
+and rows show the attribute names.
+value of each cell is the average value of the specified attribute for the specific subject and activity.</p>
+
+<p>save the data in a file</p>
+
+<pre><code class="r">write.table(x=tidydata, file=&quot;tidydata.txt&quot;)
+</code></pre>
+
+</body>
+
+</html>
+

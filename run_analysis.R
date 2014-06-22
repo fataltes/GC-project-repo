@@ -1,5 +1,5 @@
 ## getting the zipped file from internet
-url<-"https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip"
+url<-"http://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip"
 download.file(url=url, destfile="dataset.zip")
 unzip(zipfile="dataset.zip")
 ## reading train and test data and their corresponding labels
