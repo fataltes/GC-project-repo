@@ -22,3 +22,6 @@ as samples.
 6. If you are using CodeBook.Rmd, after the first successful download you must 
 put the expression "cache=TRUE" in the first chunk of r like this : {r cache=TRUE}
 so it doesn't try to download the data set every time you run CodeBook.Rmd
+
+7. Tidy data is a matrix with row names and column names.
+downloading the file from coursera you must open it with read.table
